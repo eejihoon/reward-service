@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: coupon
+    image: mysql
+    environment:
+      MYSQL_DATABASE: "coupon"
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      TZ: 'Asia/Seoul'
+    ports:
+      - '3306:3306'
+    command:
+      - 'mysqld'
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
