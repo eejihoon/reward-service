@@ -1,8 +1,8 @@
-rootProject.name = "coupon-service"
+rootProject.name = "reward-service"
 
 include(
-    "coupon-api",
-    "coupon-core",
-    "coupon-scheduler",
-    "coupon-redis"
+    "reward-api",
+    "reward-core",
+    "reward-scheduler",
+    "reward-redis"
 )
