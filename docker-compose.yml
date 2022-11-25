@@ -2,10 +2,10 @@ version: '3'
 
 services:
   mysql:
-    container_name: coupon
+    container_name: reward
     image: mysql
     environment:
-      MYSQL_DATABASE: "coupon"
+      MYSQL_DATABASE: "reward"
       MYSQL_ROOT_HOST: '%'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       TZ: 'Asia/Seoul'

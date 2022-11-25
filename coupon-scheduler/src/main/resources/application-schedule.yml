@@ -1,4 +1,0 @@
-schedules:
-  cron:
-    coupon:
-      publish: 0 0,30 3 * * *
