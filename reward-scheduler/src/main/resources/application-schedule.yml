@@ -1,4 +1,4 @@
 schedules:
   cron:
-    coupon:
+    reward:
       publish: 0 0,30 3 * * *

@@ -4,10 +4,9 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-internal class CouponEvent(
+internal class RewardEvent(
     title: String,
-    discountPolicy: DiscountPolicy,
-    discountRate: Int,
+    rewardAmount: Int,
     publishCycle: PublishCycle,
     count: Int,
     expiredDays: Long = 365,
@@ -16,7 +15,7 @@ internal class CouponEvent(
 ): BaseEntity() {
 
     /**
-     * 쿠폰 행사명
+     * 행사명
      */
     var title: String = title
         set(value) {
@@ -25,26 +24,28 @@ internal class CouponEvent(
         }
 
     /**
-     * 할인 정책
+     * 보상 금액
      */
-    @Embedded
-    private val discount: Discount = Discount(discountPolicy, discountRate)
+    var rewardAmount: Int = rewardAmount
+        set(value) {
+            if (field < 0) return
+            field = value
+        }
 
     /**
-     * 쿠폰 발행 주기
+     * 보상금 발행 주기
      */
     @Enumerated(value = EnumType.STRING)
     val publishCycle: PublishCycle = publishCycle
 
     /**
-     * 발행 갯수
+     * 보상금 발행 갯수
      */
     var count: Int = count
         set(value) {
             if (value < 0) return
             field = value
         }
-
 
     /**
      * 발행일로부터 만료일까지 일수. 기본 365일
@@ -68,8 +69,4 @@ internal class CouponEvent(
             if (field.isBefore(LocalDateTime.now())) return
             field = value
         }
-
-    fun getDiscountPolicy(): DiscountPolicy = discount.type
-
-    fun getDiscountRate(): Int = discount.rate
 }
