@@ -6,6 +6,7 @@ import javax.persistence.*
 @Entity
 internal class Reward(
     title: String,
+    description: String,
     rewardAmount: Int,
     count: Int,
     startDateTime: LocalDateTime,
@@ -20,6 +21,9 @@ internal class Reward(
             if (value.isBlank()) return
             field = value
         }
+
+    @Lob
+    var description: String = description
 
     /**
      * 보상금액
