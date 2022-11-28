@@ -1,10 +1,7 @@
 package com.reward.core.service
 
-import com.reward.core.dto.RewardEventCreateRequest
-import com.reward.core.dto.RewardEventResponse
-import com.reward.core.dto.RewardPublishRequest
-import com.reward.core.dto.RewardResponse
-import com.reward.core.service.implement.RewardEventService
+import com.reward.core.dto.*
+import com.reward.core.service.implement.RewardCreateService
 import com.reward.core.service.implement.RewardFindService
 import com.reward.core.service.implement.RewardPublishService
 import org.springframework.stereotype.Service
@@ -13,22 +10,32 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 internal class DefaultRewardService(
     private val publishService: RewardPublishService,
-    private val eventService: RewardEventService,
-    private val findService: RewardFindService,
+    private val rewardFindService: RewardFindService,
+    private val rewardCreateService: RewardCreateService,
 ): RewardService {
 
     @Transactional
-    override fun publish(request: RewardPublishRequest) {
-        publishService.publish(request = request)
-    }
-
-    @Transactional
-    override fun createEvent(request: RewardEventCreateRequest): RewardEventResponse {
-        return eventService.createRewardEvent(request)
+    override fun publish(request: RewardPublishRequest): RewardPublishResponse {
+        return publishService.publish(request = request)
     }
 
     @Transactional(readOnly = true)
-    override fun getRewards(eventId: Long): List<RewardResponse> {
-        return findService.getRewards(eventId = eventId)
+    override fun getReward(rewardId: Long): RewardViewResponse {
+        return rewardFindService.getReward(rewardId = rewardId)
     }
+
+    @Transactional
+    override fun createReward(
+        request: RewardCreateRequest
+    ): RewardViewResponse {
+        return  rewardCreateService.createReward(request)
+    }
+
+    @Transactional
+    override fun getRewardWinners(
+        request: RewardWinnersRequest
+    ): List<RewardWinnerResponse> {
+        return publishService.getRewardWinners(request)
+    }
+
 }
