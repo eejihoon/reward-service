@@ -9,6 +9,8 @@ import com.reward.core.exception.AlreadyGetRewardException
 import com.reward.core.exception.RewardErrorCode
 import com.reward.core.exception.RewardExhaustedException
 import com.reward.core.exception.RewardNotFoundException
+import com.reward.core.redis.util.DistributeLock
+import com.reward.core.redis.util.LockKey
 import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -24,6 +26,7 @@ internal class RewardPublishService(
     private val log = LoggerFactory.getLogger(javaClass)
 
     @Transactional
+    @DistributeLock(key = LockKey.REWARD_PUBLISH)
     fun publish(request: RewardPublishRequest): RewardPublishResponse {
         val reward = rewardRepository.findByIdOrNull(request.rewardId)
             ?: throw RewardNotFoundException(RewardErrorCode.REWARD_NOT_FOUND)
@@ -62,6 +65,21 @@ internal class RewardPublishService(
         return RewardPublishResponse.of(newRewardPublish)
     }
 
+    fun getRewardWinners(request: RewardWinnersRequest): List<RewardWinnerResponse> {
+        // 지정한 날짜에 보상금 지급받은 유저 조회
+        var rewardWinners = publishRepository.findAllByRewardIdAndPublishedAt(
+            rewardId = request.rewardId,
+            publishedAt = request.publishedAt,
+        )
+
+        rewardWinners = if (request.orderBy == OrderCondition.DESC)
+            rewardWinners.sortedByDescending { it.id }
+        else
+            rewardWinners.sortedBy { it.id }
+
+        return rewardWinners.map { RewardWinnerResponse.of(it) }
+    }
+
     private fun getAllPublishedToday(
         request: RewardPublishRequest,
         today: LocalDate,
@@ -97,21 +115,6 @@ internal class RewardPublishService(
         5 -> rewardAmount * winningCount
         10 -> rewardAmount * winningCount
         else -> rewardAmount
-    }
-
-    fun getRewardWinners(request: RewardWinnersRequest): List<RewardWinnerResponse> {
-        // 지정한 날짜에 보상금 지급받은 유저 조회
-        var rewardWinners = publishRepository.findAllByRewardIdAndPublishedAt(
-            rewardId = request.rewardId,
-            publishedAt = request.publishedAt,
-        )
-
-        rewardWinners = if (request.orderBy == OrderCondition.DESC)
-            rewardWinners.sortedByDescending { it.id }
-        else
-            rewardWinners.sortedBy { it.id }
-
-        return rewardWinners.map { RewardWinnerResponse.of(it) }
     }
 
 }
