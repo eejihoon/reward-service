@@ -4,8 +4,7 @@ import com.reward.core.domain.Reward
 import com.reward.core.domain.RewardPublish
 import com.reward.core.domain.RewardPublishRepository
 import com.reward.core.domain.RewardRepository
-import com.reward.core.dto.RewardPublishRequest
-import com.reward.core.dto.RewardPublishResponse
+import com.reward.core.dto.*
 import com.reward.core.exception.AlreadyGetRewardException
 import com.reward.core.exception.RewardErrorCode
 import com.reward.core.exception.RewardExhaustedException
@@ -98,6 +97,21 @@ internal class RewardPublishService(
         5 -> rewardAmount * winningCount
         10 -> rewardAmount * winningCount
         else -> rewardAmount
+    }
+
+    fun getRewardWinners(request: RewardWinnersRequest): List<RewardWinnerResponse> {
+        // 지정한 날짜에 보상금 지급받은 유저 조회
+        var rewardWinners = publishRepository.findAllByRewardIdAndPublishedAt(
+            rewardId = request.rewardId,
+            publishedAt = request.publishedAt,
+        )
+
+        rewardWinners = if (request.orderBy == OrderCondition.DESC)
+            rewardWinners.sortedByDescending { it.id }
+        else
+            rewardWinners.sortedBy { it.id }
+
+        return rewardWinners.map { RewardWinnerResponse.of(it) }
     }
 
 }

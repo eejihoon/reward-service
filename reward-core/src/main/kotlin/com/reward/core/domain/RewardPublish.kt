@@ -5,14 +5,25 @@ import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.Table
+import javax.persistence.UniqueConstraint
 
+@Table(
+    name = "reward_publish",
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "uk_reward_id_member_id_published_at",
+            columnNames = ["memberId", "reward_id", "publishedAt"]
+        )
+    ]
+)
 @Entity
 internal class RewardPublish(
     memberId: Long,
     reward: Reward,
     amount: Int,
     winningCount: Int,
-): BaseEntity() {
+) : BaseEntity() {
 
     val memberId: Long = memberId
 
