@@ -16,7 +16,7 @@ spring.config.activate.on-profile: local
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
@@ -28,6 +28,11 @@ spring:
     username: 'root'
     password: ''
     url: jdbc:mysql://localhost:3306/reward?useSSL=false&serverTimezone=Asia/Seoul
+    hikari:
+      schema: classpath:schema.sql
+  sql:
+    init:
+      mode: ALWAYS
 
 logging:
   level:

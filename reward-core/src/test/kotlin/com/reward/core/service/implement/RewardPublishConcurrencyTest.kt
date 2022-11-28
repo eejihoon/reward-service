@@ -50,6 +50,7 @@ internal class RewardPublishConcurrencyTest {
     @AfterEach
     fun tearDown() {
         publishRepository.deleteAll()
+        rewardRepository.deleteAll()
     }
 
     @Test

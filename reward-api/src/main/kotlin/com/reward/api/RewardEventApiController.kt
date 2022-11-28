@@ -4,6 +4,7 @@ import com.reward.common.Response
 import com.reward.core.dto.RewardPublishRequest
 import com.reward.core.dto.RewardPublishResponse
 import com.reward.core.service.RewardService
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,10 +22,17 @@ class RewardEventApiController(
     private val rewardService: RewardService
 ) {
 
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * 보상 지급 API
+     */
     @PostMapping
     fun publishReward(
         @RequestBody @Valid request: RewardPublishRequest
     ): ResponseEntity<Response<RewardPublishResponse>> {
+        log.info("보상 지급 API Request: $request")
+
         val content = rewardService.publish(request)
 
         return ResponseEntity(Response.of(content), HttpStatus.OK)
