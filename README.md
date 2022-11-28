@@ -1,6 +1,6 @@
 # 실행
 
-```aidl
+```
 # git clone
 $git clone git@github.com:cocodori/reward-service.git
 
@@ -16,7 +16,7 @@ $./gradlew clean test build && java -jar reward-api/build/libs/*.jar
 
 # API
 ### 보상 데이터 조회 API
-```aidl
+```
 request:
 GET: http://localhost:8080/api/v1/rewards/{rewardId}
 (testRewardId: 1)
@@ -49,7 +49,7 @@ response:
 ```
 
 ### 보상 조회 API
-```aidl
+```
 request:
 http://localhost:8080/api/v1/rewards/winners?rewardId=1&publishedAt=2022-11-28&orderBy=DESC
 
