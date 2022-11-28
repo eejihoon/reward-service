@@ -15,6 +15,10 @@ $./gradlew clean test build && java -jar reward-api/build/libs/*.jar
 ```
 
 # API
+### API DOCUMENT
+
+https://documenter.getpostman.com/view/15834244/2s8YsxuApx
+
 ### 보상 데이터 조회 API
 ```
 request:
