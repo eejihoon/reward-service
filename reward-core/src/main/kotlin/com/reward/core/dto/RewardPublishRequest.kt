@@ -1,8 +1,14 @@
 package com.reward.core.dto
 
-import com.reward.core.domain.PublishCycle
+import org.jetbrains.annotations.NotNull
+import javax.validation.constraints.Min
 
 
 data class RewardPublishRequest(
-    val publishCycle: PublishCycle,
+    @field:NotNull
+    @field:Min(value = 0)
+    val memberId: Long,
+    @field:NotNull
+    @field:Min(value = 0)
+    val rewardId: Long,
 )

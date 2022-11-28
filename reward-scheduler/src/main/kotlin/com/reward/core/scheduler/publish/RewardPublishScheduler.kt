@@ -1,14 +1,12 @@
 package com.reward.core.scheduler.publish
 
-import com.reward.core.domain.PublishCycle
 import com.reward.core.dto.RewardPublishRequest
 import com.reward.core.service.RewardService
 import org.slf4j.LoggerFactory
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Component
 import java.util.UUID
 
-@Component
+//@Component
 class RewardPublishScheduler(
     private val rewardService: RewardService
 ) {
@@ -22,11 +20,11 @@ class RewardPublishScheduler(
     fun publishReward() {
         log.info("START === PUBLISH::REWARD::EVENT::DAILY::SCHEDULER ${UUID.randomUUID()}")
 
-        rewardService.publish(
-            request = RewardPublishRequest(
-                publishCycle = PublishCycle.DAILY
-            )
-        )
+//        rewardService.publish(
+//            request = RewardPublishRequest(
+//                publishCycle = PublishCycle.DAILY
+//            )
+//        )
 
         log.info("END === PUBLISH::REWARD::EVENT::DAILY::SCHEDULER ${UUID.randomUUID()}")
     }
